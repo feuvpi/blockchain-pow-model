@@ -43,9 +43,41 @@ class Blockchain {
       }
 
 
-};
+      createNewTransaction(amount, sender, recipient){
+        const newTranscation = {
+            amount,
+            sender,
+            recipient,
+        };
+        this.pendingTranscations.push(newTranscation);
+    };
 
+    createNewBlock(){
+        const timestamp = Date.now();
+        const transcations = this.pendingTranscations;
+        const previousBlockHash = this.getLastBlock().hash;
+        const generateHash = this.generateHash(
+            previousBlockHash,
+            timestamp,
+            transcations
+        );
 
+        const newBlock = {
+            index: this.chain.length + 1,
+            timestamp,
+            transcations,
+            nonce: generateHash.nonce,
+            hash: generateHash.hash,
+            previousBlockHash,
+        };
+
+        this.pendingTranscations = [];
+        this.chain.push(newBlock);
+
+        return newBlock;
+    }
+
+}
 
 
 
