@@ -1,0 +1,11 @@
+{
+  "name": "blockchain-model-pow",
+  "version": "1.0.0",
+  "description": "A simple implementation of a blockchain with proof-of-work (pow) consensus mechanism using javascript",
+  "main": "blockchain.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fred Pinheiro",
+  "license": "ISC"
+}
