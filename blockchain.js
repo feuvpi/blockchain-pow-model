@@ -3,7 +3,7 @@ const SHA256 = require("sha256");
 class Blockchain {
     constructor(){
         this.chain = [this.createGenesisBlock()];
-        this.pendingTranscations = [];
+        this.pendingTransactions = [];
     }
 
     createGenesisBlock() {
@@ -24,16 +24,16 @@ class Blockchain {
       }
 
 
-      generateHash(previousBlockHash, timestamp, pendingTranscations){
+      generateHash(previousBlockHash, timestamp, pendingTransactions){
         let hash = "";
-        let nonde = 0;
+        let nonce = 0;
 
         while(hash.substring(0,3) != "000"){
             nonce++;
             hash = SHA256(
                 previousBlockHash +
                 timestamp + 
-                JSON.stringify(pendingTranscations) +
+                JSON.stringify(pendingTransactions) +
                 nonce
             ).toString();
 
@@ -44,40 +44,42 @@ class Blockchain {
 
 
       createNewTransaction(amount, sender, recipient){
-        const newTranscation = {
+        const newTransaction = {
             amount,
             sender,
             recipient,
         };
-        this.pendingTranscations.push(newTranscation);
+        this.pendingTransactions.push(newTransaction);
     };
 
     createNewBlock(){
         const timestamp = Date.now();
-        const transcations = this.pendingTranscations;
+        const transactions = this.pendingTransactions;
         const previousBlockHash = this.getLastBlock().hash;
         const generateHash = this.generateHash(
             previousBlockHash,
             timestamp,
-            transcations
+            transactions
         );
 
         const newBlock = {
             index: this.chain.length + 1,
             timestamp,
-            transcations,
+            transactions,
             nonce: generateHash.nonce,
             hash: generateHash.hash,
             previousBlockHash,
         };
 
-        this.pendingTranscations = [];
+        this.pendingTransactions = [];
         this.chain.push(newBlock);
 
         return newBlock;
     }
 
 }
+
+module.exports = Blockchain;
 
 
 
